@@ -1,8 +1,7 @@
 package com.project.back_end.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -27,6 +26,12 @@ public class Appointment {
 
   @NotNull(message = "Status is required")
   private int status; // 0: Scheduled, 1: Completed
+
+  @Size(max = 500)
+  private String reasonForVisit;
+
+  @Size(max = 1000)
+  private String notes;
 
   // Default constructor (required by JPA)
   public Appointment() {
@@ -71,6 +76,22 @@ public class Appointment {
 
   public void setStatus(int status) {
     this.status = status;
+  }
+
+  public String getReasonForVisit() {
+    return reasonForVisit;
+  }
+
+  public void setReasonForVisit(String reasonForVisit) {
+    this.reasonForVisit = reasonForVisit;
+  }
+
+  public String getNotes() {
+    return notes;
+  }
+
+  public void setNotes(String notes) {
+    this.notes = notes;
   }
 
   // Helper Methods (transient - not persisted)

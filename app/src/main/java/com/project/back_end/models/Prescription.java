@@ -2,8 +2,7 @@ package com.project.back_end.models;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 @Document(collection = "prescriptions")
 public class Prescription {
@@ -28,6 +27,13 @@ public class Prescription {
 
   @Size(max = 200, message = "Doctor notes cannot exceed 200 characters")
   private String doctorNotes;
+
+  @Min(0)
+  @Max(12)
+  private Integer refillCount = 0;
+
+  @Size(max = 100)
+  private String pharmacyName;
 
   // Default constructor (required by Spring Data)
   public Prescription() {
@@ -88,5 +94,21 @@ public class Prescription {
 
   public void setDoctorNotes(String doctorNotes) {
     this.doctorNotes = doctorNotes;
+  }
+
+  public Integer getRefillCount() {
+    return refillCount;
+  }
+
+  public void setRefillCount(Integer refillCount) {
+    this.refillCount = refillCount;
+  }
+
+  public String getPharmacyName() {
+    return pharmacyName;
+  }
+
+  public void setPharmacyName(String pharmacyName) {
+    this.pharmacyName = pharmacyName;
   }
 }

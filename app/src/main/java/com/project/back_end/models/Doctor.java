@@ -37,6 +37,17 @@ public class Doctor {
     @ElementCollection
     private List<String> availableTimes;
 
+    @Min(0)
+    @Max(50)
+    private Integer yearsOfExperience;
+
+    @Size(max = 255)
+    private String clinicAddress;
+
+    @DecimalMin("0.0")
+    @DecimalMax("5.0")
+    private Double rating;
+
     // Default constructor (required by JPA)
     public Doctor() {
     }
@@ -96,5 +107,29 @@ public class Doctor {
 
     public void setAvailableTimes(List<String> availableTimes) {
         this.availableTimes = availableTimes;
+    }
+
+    public Integer getYearsOfExperience() {
+        return yearsOfExperience;
+    }
+
+    public void setYearsOfExperience(Integer yearsOfExperience) {
+        this.yearsOfExperience = yearsOfExperience;
+    }
+
+    public String getClinicAddress() {
+        return clinicAddress;
+    }
+
+    public void setClinicAddress(String clinicAddress) {
+        this.clinicAddress = clinicAddress;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
     }
 }

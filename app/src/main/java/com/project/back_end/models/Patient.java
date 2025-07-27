@@ -2,7 +2,9 @@ package com.project.back_end.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.LocalDate;
 
 @Entity
 public class Patient {
@@ -31,6 +33,17 @@ public class Patient {
     @NotNull(message = "Address is required")
     @Size(max = 255, message = "Address cannot exceed 255 characters")
     private String address;
+
+    @Past(message = "Date of birth must be in the past")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate dateOfBirth;
+
+    @Pattern(regexp = "\\d{10}", message = "Emergency contact must be 10 digits")
+    @Size(max = 20)
+    private String emergencyContact;
+
+    @Size(max = 100)
+    private String insuranceProvider;
 
     // Default constructor (required by JPA)
     public Patient() {
@@ -83,5 +96,29 @@ public class Patient {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getEmergencyContact() {
+        return emergencyContact;
+    }
+
+    public void setEmergencyContact(String emergencyContact) {
+        this.emergencyContact = emergencyContact;
+    }
+
+    public String getInsuranceProvider() {
+        return insuranceProvider;
+    }
+
+    public void setInsuranceProvider(String insuranceProvider) {
+        this.insuranceProvider = insuranceProvider;
     }
 }
