@@ -9,19 +9,19 @@ This hybrid approach ensures efficient data management while maintaining scalabi
 ## Numbered flow of data and control
 
 ```bash
-1. **User Interaction**: A user accesses either the **AdminDashboard**, **DoctorDashboard**, or interacts with modules like **Appointments** or **PatientRecord** via the web interface.
-2. **Request Routing**:
-   - For dashboard pages (Thymeleaf), the request is handled by **MVC controllers**.
-   - For API-driven modules (e.g., appointments), the request is processed by **REST controllers** returning JSON.
-3. **Service Layer**: Controllers delegate business logic to the **Service Layer**, which orchestrates operations like validation or data aggregation.
-4. **Database Interaction**:
-   - For structured data (e.g., patients, doctors), the service calls **MySQL Repositories** using **JPA Entities**.
-   - For document-based data (e.g., prescriptions), it uses **MongoDB Repositories** with **MongoDB Models**.
-5. **Data Retrieval/Update**:
-   - MySQL repositories interact with the **MySQL Database** for relational data.
-   - MongoDB repositories access the **MongoDB Database** for flexible document storage.
-6. **Response Formation**: The service layer processes retrieved data and returns it to the controller.
-7. **User Feedback**:
+1. User Interaction: A user accesses either the AdminDashboard, DoctorDashboard, or interacts with modules like Appointments or PatientRecord via the web interface.
+2. Request Routing:
+   - For dashboard pages (Thymeleaf), the request is handled by MVC controllers.
+   - For API-driven modules (e.g., appointments), the request is processed by REST controllers returning JSON.
+3. Service Layer: Controllers delegate business logic to the Service Layer, which orchestrates operations like validation or data aggregation.
+4. Database Interaction:
+   - For structured data (e.g., patients, doctors), the service calls MySQL Repositories using JPA Entities.
+   - For document-based data (e.g., prescriptions), it uses MongoDB Repositories with MongoDB Models.
+5. Data Retrieval/Update:
+   - MySQL repositories interact with the MySQL Database for relational data.
+   - MongoDB repositories access the MongoDB Database for flexible document storage.
+6. Response Formation: The service layer processes retrieved data and returns it to the controller.
+7. User Feedback:
    - MVC controllers render Thymeleaf templates (dashboards).
    - REST controllers send JSON responses (APIs) back to the client.
 ```
