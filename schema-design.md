@@ -2,6 +2,26 @@
 
 ## MySQL Database Design (Relational Data)
 
+### New Table: admins
+
+```bash
+- id: INT, Primary Key, Auto Increment
+- name: VARCHAR(100), Not Null
+- email: VARCHAR(100), Unique, Not Null
+- phone: VARCHAR(20)
+- role: ENUM('super_admin', 'support_admin', 'billing_admin'), Not Null
+- password_hash: VARCHAR(255), Not Null (bcrypt/scrypt)
+- last_login: DATETIME
+- is_active: BOOLEAN, Default True
+- created_at: TIMESTAMP, Default CURRENT_TIMESTAMP
+```
+
+#### Justification:
+
+- Role-Based Access Control (RBAC): role column enforces permission tiers (e.g., super_admin can delete doctors).
+- Security: Stores only password hashes (never plaintext).
+- Soft Delete: is_active allows deactivation without data loss.
+
 ### Table: patients
 
 ```bash
@@ -46,6 +66,8 @@
 - duration_minutes: INT, Default 60 (1 hour)
 - status: ENUM('Scheduled', 'Completed', 'Cancelled', 'No-Show'), Default 'Scheduled'
 - notes: TEXT
+- modified_by_admin: INT, Nullable, Foreign Key → admins(id)
+- modification_notes: TEXT (e.g., "Rescheduled by admin due to clinic holiday")
 ```
 
 #### Notes:
@@ -87,6 +109,58 @@
 - Ties payments to specific appointments.
 - transaction_id stores third-party gateway references.
 
+### Table: admin_audit_logs (For Security Compliance)
+
+```bash
+- id: INT, Primary Key, Auto Increment
+- admin_id: INT, Foreign Key → admins(id), Not Null
+- action: VARCHAR(50), Not Null (e.g., "DELETE_DOCTOR", "UPDATE_PATIENT")
+- target_id: INT (ID of affected doctor/patient)
+- ip_address: VARCHAR(45)
+- timestamp: TIMESTAMP, Default CURRENT_TIMESTAMP
+```
+
+#### Why?
+
+- Mandatory for HIPAA/GDPR compliance.
+- Tracks all sensitive admin actions.
+
+### Example Workflow Integration
+
+1. Admin Deletes a Doctor:
+
+- Sets doctors.is_active = False (soft delete).
+- Records action in admin_audit_logs with action = "DEACTIVATE_DOCTOR".
+
+2. Admin Modifies Appointment:
+
+- Updates appointments table with modified_by_admin and notes.
+- Appointment history remains intact for accountability.
+
+#### Key Relationships
+
+```bash
+erDiagram
+    admins ||--o{ admin_audit_logs : "logs"
+    admins ||--o{ appointments : "modifies"
+    admins {
+        INT id PK
+        VARCHAR(100) name
+        VARCHAR(100) email
+        ENUM role
+    }
+    admin_audit_logs {
+        INT id PK
+        INT admin_id FK
+        VARCHAR(50) action
+    }
+```
+
+#### Design Decisions:
+
+- No Direct Patient/Doctor Links: Admins interact via logs and overrides, not ownership.
+- Nullable Foreign Keys: Appointments can be modified by either doctors or admins.
+
 ## MongoDB Collection Design (Document-Based Data)
 
 ### Collection: prescriptions
@@ -94,9 +168,12 @@
 ```bash
 {
   "_id": ObjectId("507f1f77bcf86cd799439011"),
-  "appointment_id": 42, // Reference to MySQL appointments.id
-  "patient_id": 101, // Reference to MySQL patients.id
-  "doctor_id": 5, // Reference to MySQL doctors.id
+  // Core References
+  "appointment_id": 42,                         // MySQL appointments.id
+  "patient_id": 101,                            // MySQL patients.id
+  "doctor_id": 5,                               // MySQL doctors.id
+
+  // Medical Content
   "issued_date": ISODate("2023-08-15T09:30:00Z"),
   "medications": [
     {
@@ -104,25 +181,53 @@
       "dosage": "400mg",
       "frequency": "Every 8 hours",
       "duration": "7 days",
-      "instructions": "Take with food"
+      "instructions": "Take with food",
+      "ndc_code": "0003-0105-01"               // National Drug Code for validation
     },
     {
       "name": "Amoxicillin",
       "dosage": "500mg",
       "frequency": "Twice daily",
       "duration": "10 days",
-      "instructions": "Complete full course"
+      "instructions": "Complete full course",
+      "ndc_code": "0003-2465-05"
     }
   ],
-  "diagnosis": "Acute sinusitis",
-  "notes": "Patient allergic to penicillin - verified safe alternative prescribed",
-  "attachments": [
-    "s3://medical-reports/scan_20230815.pdf"
+  "diagnosis": {
+    "icd11_code": "CA08.0",                    // Standardized diagnosis code
+    "description": "Acute sinusitis"
+  },
+
+  // Audit & Security
+  "access_control": [                          // Granular permissions
+    { "user_id": 5, "role": "doctor", "permission": "edit" },
+    { "user_id": 3, "role": "admin", "permission": "view" }
   ],
+  "corrections": [
+    {
+      "admin_id": 3,                           // MySQL admins.id
+      "reason": "Dosage typo fix",
+      "field": "medications.0.dosage",
+      "old_value": "50mg",
+      "new_value": "500mg",
+      "timestamp": ISODate("2023-08-20T08:15:00Z"),
+      "approval_required": false               // For major changes
+    }
+  ],
+
+  // Metadata
   "is_active": true,
+  "attachments": [
+    {
+      "path": "s3://medical-reports/scan_20230815.pdf",
+      "hash": "a1b2c3...",                    // File integrity check
+      "uploaded_by": 5                         // Doctor who attached it
+    }
+  ],
   "metadata": {
     "created_by": "dr_smith@clinic.com",
-    "last_updated": ISODate("2023-08-15T10:15:00Z")
+    "last_updated": ISODate("2023-08-15T10:15:00Z"),
+    "signature": "e-signature-abc123"         // Digital signature
   }
 }
 ```
