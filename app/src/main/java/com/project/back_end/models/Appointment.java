@@ -74,8 +74,8 @@ public class Appointment {
     return status;
   }
 
-  public void setStatus(int status) {
-    this.status = status;
+  public void setStatus(@NotNull(message = "Status is required") int newStatus) {
+    this.status = newStatus;
   }
 
   public String getReasonForVisit() {
