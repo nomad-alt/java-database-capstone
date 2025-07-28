@@ -1,62 +1,113 @@
-<!-- patientDashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/svg+xml" href="../assets/images/logo/logo.png" />
-    <title>PatientDashboard</title>
-    <link rel="stylesheet" href="../assets/css/adminDashboard.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+    <title>Patient Dashboard - Find Doctors</title>
+
+    <!-- CSS Files -->
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/adminDashboard.css">
     <link rel="stylesheet" href="../assets/css/patientDashboard.css">
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- JavaScript Files -->
     <script src="../js/render.js" defer></script>
     <script src="../js/util.js" defer></script>
     <script src="../js/components/header.js" defer></script>
     <script src="../js/components/footer.js" defer></script>
-    <script type="module" src="../js/components/modals.js"></script>
+    <script src="../js/components/modals.js" defer></script>
+    <script src="../js/components/doctorCards.js" defer></script>
 </head>
 
 <body onload="renderContent()">
     <div class="container">
         <div class="wrapper">
+            <!-- Header injected via header.js -->
             <div id="header"></div>
+
             <main class="main-content">
-                <input type="text" id="searchBar" class="searchBar" placeholder="Search Bar for custom output" />
-                <div class="filter-wrapper">
-                    <select class="filter-select" id="filterTime">
-                        <option value="">Sort by Time</option>
-                        <option value="AM">AM</option>
-                        <option value="PM">PM</option>
-                    </select>
-                    <select class="filter-select" id="filterSpecialty">
-                        <option value="">Filter by Specialty</option>
-                        <option value="Cardiologist">Cardiologist</option>
-                        <option value="Dermatologist">Dermatologist</option>
-                        <option value="Neurologist">Neurologist</option>
-                        <option value="Pediatrician">Pediatrician</option>
-                        <option value="Orthopedic">Orthopedic</option>
-                        <option value="Gynecologist">Gynecologist</option>
-                        <option value="Psychiatrist">Psychiatrist</option>
-                        <option value="Dentist">Dentist</option>
-                        <option value="Ophthalmologist">Ophthalmologist</option>
-                        <option value="Ent">ENT Specialist</option>
-                        <option value="Urologist">Urologist</option>
-                        <option value="Oncologist">Oncologist</option>
-                        <option value="Gastroenterologist">Gastroenterologist</option>
-                        <option value="General">General Physician</option>
-                    </select>
+                <h1 class="page-title">Find Your Doctor</h1>
+
+                <!-- Search and Filter Section -->
+                <div class="search-filter-container">
+                    <div class="search-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="searchBar" class="search-bar"
+                            placeholder="Search by doctor name or specialty...">
+                    </div>
+
+                    <div class="filter-wrapper">
+                        <select class="filter-select" id="filterTime">
+                            <option value="">All Availability</option>
+                            <option value="AM">Morning (AM)</option>
+                            <option value="PM">Afternoon (PM)</option>
+                        </select>
+
+                        <select class="filter-select" id="filterSpecialty">
+                            <option value="">All Specialties</option>
+                            <option value="Cardiologist">Cardiologist</option>
+                            <option value="Dermatologist">Dermatologist</option>
+                            <option value="Neurologist">Neurologist</option>
+                            <option value="Pediatrician">Pediatrician</option>
+                            <option value="Orthopedic">Orthopedic</option>
+                            <option value="Gynecologist">Gynecologist</option>
+                            <option value="Psychiatrist">Psychiatrist</option>
+                            <option value="Dentist">Dentist</option>
+                            <option value="Ophthalmologist">Ophthalmologist</option>
+                            <option value="Ent">ENT Specialist</option>
+                        </select>
+
+                        <button id="resetFilters" class="reset-btn">
+                            <i class="fas fa-undo"></i> Reset
+                        </button>
+                    </div>
                 </div>
-                <div id="content"></div>
+
+                <!-- Doctor Cards Container -->
+                <div id="content" class="doctor-cards-container"></div>
+
+                <!-- Loading Spinner -->
+                <div id="loadingSpinner" class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Loading doctors...</p>
+                </div>
+
+                <!-- No Results Message -->
+                <div id="noResults" class="no-results-message">
+                    <i class="fas fa-user-md"></i>
+                    <h3>No doctors found matching your criteria</h3>
+                    <p>Try adjusting your filters or search term</p>
+                </div>
             </main>
+
+            <!-- Footer injected via footer.js -->
             <div id="footer"></div>
         </div>
     </div>
+
+    <!-- Booking Modal -->
     <div id="modal" class="modal">
         <div class="modal-content">
             <span class="close" id="closeModal">&times;</span>
             <div id="modal-body"></div>
         </div>
     </div>
+
+    <!-- Ripple Effect -->
+    <div id="rippleOverlay" class="ripple-overlay"></div>
+
+    <!-- Confirmation Toast -->
+    <div id="confirmationToast" class="confirmation-toast">
+        <i class="fas fa-check-circle"></i>
+        <span>Appointment booked successfully!</span>
+    </div>
+
+    <!-- JavaScript Module -->
     <script type="module" src="../js/patientDashboard.js" defer></script>
 </body>
 

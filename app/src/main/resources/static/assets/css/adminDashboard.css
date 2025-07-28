@@ -1,94 +1,317 @@
-/*this is the style sheet for the adminDashboard. */
+/* ==================== */
+/* GLOBAL RESET & BASE  */
+/* ==================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-/* 
-Global Reset (`*`)
+html,
+body {
+  height: 100%;
+  font-family: 'Roboto', Arial, sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+}
 
-* Purpose: Ensure consistent layout across all browsers.
-* Properties:
+/* ==================== */
+/* LAYOUT STRUCTURE     */
+/* ==================== */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
-  * `margin: 0` — removes default outer spacing from all elements.
-  * `padding: 0` — removes default inner spacing.
-  * `box-sizing: border-box` — ensures padding and borders are included within the total width/height of elements.
+.container {
+  display: flex;
+  flex: 1;
+}
 
-Base HTML & Body (`html, body`)
+/* ==================== */
+/* MAIN CONTENT AREA    */
+/* ==================== */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  background-color: #fff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+  margin: 1rem;
+  border-radius: 8px;
+}
 
-* Purpose: Establish a full-height layout and apply a standard font across the page.
-* Properties:
+.section-heading {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #003e3e;
+  margin-bottom: 2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e9ecef;
+}
 
-  * `height: 100%` — allows containers to stretch to the full viewport height.
-  * `font-family: Arial, sans-serif` — applies a clean, readable sans-serif font.
+/* ==================== */
+/* DASHBOARD CARDS      */
+/* ==================== */
+.doctor-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
 
-Main Layout Wrapper (`.wrapper`)
+.doctor-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  border: 1px solid #e9ecef;
+}
 
-* Purpose: Create a flexible, vertical layout that fills the entire screen.
-* Properties:
+.doctor-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
 
-  * `display: flex` — enables flexbox for layout control.
-  * `flex-direction: column` — stacks children vertically.
-  * `min-height: 100vh` — ensures the wrapper always covers full screen height.
+.card-header {
+  background-color: #015c5d;
+  color: white;
+  padding: 1.2rem;
+}
 
-Section Heading (`h2`)
+.card-header h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.3rem;
+}
 
-* Purpose: Style the headings prominently for section separation.
-* Properties:
+.specialty {
+  display: inline-block;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 0.2rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+}
 
-  * `font-size: 32px` — makes the heading large and noticeable.
-  * `font-weight: bold` — emphasizes text.
-  * `margin-bottom: 50px` — creates space below the heading.
-  * `color: #003e3e` — uses a strong teal for visual anchoring.
+.card-body {
+  padding: 1.2rem;
+}
 
-Main Content Section (`.main-content`)
+.card-body p {
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #555;
+}
 
-* Purpose: Layout the main content with padding and a background image.
-* Properties:
+.card-body i {
+  color: #015c5d;
+  width: 1.2rem;
+  text-align: center;
+}
 
-  * `flex-grow: 1` — lets the content fill the available vertical space.
-  * `padding: 40px` — adds internal spacing around content.
-  * `display: flex` and `flex-direction: column` — organizes content in a vertical stack.
-  * `text-align: center` — centers the text.
-  * `background-image: url("index.png")` — sets a full-screen dashboard background.
-  * `background-size: cover` — ensures the image covers the whole section.
-  * `background-position: center` — centers the image.
-  * `background-repeat: no-repeat` — avoids tiling the image.
-  * `background-attachment: fixed` — fixes the image while scrolling.
+.card-footer {
+  padding: 1rem 1.2rem;
+  background-color: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+}
 
-Primary Button (`button`)
+.time-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  margin-top: 0.5rem;
+}
 
-* Purpose: Design prominent, interactive buttons for main actions.
+.time-slots li {
+  background-color: #e9ecef;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
 
-* Properties:
+.card-actions {
+  display: flex;
+  border-top: 1px solid #e9ecef;
+}
 
-  * `background-color: #A62B1F` — sets a bold red color.
-  * `color: white` — makes text stand out.
-  * `border: none` — removes any outline/border.
-  * `border-radius: 12px` — creates rounded corners.
-  * `padding: 10px 20px` — gives space inside the button.
-  * `margin-top: 20px` — adds spacing above the button.
-  * `width: 200px` — ensures consistent button width.
-  * `cursor: pointer` — shows a hand icon on hover.
-  * `font-size: 16px` — makes the text readable.
+.btn-edit,
+.btn-delete {
+  flex: 1;
+  padding: 0.8rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
 
-* On Hover:
+.btn-edit {
+  color: #015c5d;
+  border-right: 1px solid #e9ecef;
+}
 
-  * Retains the same red background to maintain branding.
+.btn-delete {
+  color: #dc3545;
+}
 
-Admin Button (`.adminBtn`)
+.btn-edit:hover {
+  background-color: rgba(1, 92, 93, 0.1);
+}
 
-* Purpose: Provide a secondary button style for admin-specific actions.
+.btn-delete:hover {
+  background-color: rgba(220, 53, 69, 0.1);
+}
 
-* Properties:
+/* ==================== */
+/* FILTER CONTROLS      */
+/* ==================== */
+.filter-controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
 
-  * `background-color: #f4f4f4` — uses a light grey background.
-  * `color: #333` — uses dark text for contrast.
-  * `font-weight: bold` — emphasizes text.
-  * `width: 110px` — smaller, compact width.
-  * `padding: 10px 0` — vertical padding only.
-  * `border: none` — clean look.
-  * `cursor: pointer` — indicates it's clickable.
+.search-bar {
+  flex: 1;
+  min-width: 250px;
+  position: relative;
+}
 
-* On Hover**:
+.search-bar input {
+  width: 100%;
+  padding: 0.8rem 1rem 0.8rem 2.5rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+}
 
-   Changes text color to `#A62B1F` for brand consistency while keeping the background same.
+.search-bar i {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #777;
+}
 
+.filter-select {
+  min-width: 200px;
+}
 
-*/
+.filter-select select {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem;
+}
+
+/* ==================== */
+/* BUTTONS              */
+/* ==================== */
+.btn-primary {
+  background-color: #A62B1F;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-primary:hover {
+  background-color: #8c241a;
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background-color: #f4f4f4;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background-color: #e9ecef;
+  color: #A62B1F;
+}
+
+/* ==================== */
+/* NO RESULTS STATE     */
+/* ==================== */
+.no-results {
+  text-align: center;
+  padding: 3rem;
+  color: #777;
+}
+
+.no-results i {
+  font-size: 3rem;
+  color: #ddd;
+  margin-bottom: 1rem;
+}
+
+/* ==================== */
+/* RESPONSIVE DESIGN    */
+/* ==================== */
+@media (max-width: 768px) {
+  .doctor-cards-container {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+
+  .filter-controls {
+    flex-direction: column;
+  }
+
+  .search-bar,
+  .filter-select {
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+
+  .section-heading {
+    font-size: 1.5rem;
+  }
+
+  .card-actions {
+    flex-direction: column;
+  }
+
+  .btn-edit,
+  .btn-delete {
+    padding: 0.6rem;
+  }
+
+  .btn-edit {
+    border-right: none;
+    border-bottom: 1px solid #e9ecef;
+  }
+}

@@ -1,85 +1,93 @@
 /* This is the style sheet for global change across the files. */
 
 /* style.css */
+/* Header Styles */
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #f4f4f4;
-    color: #333;
-    padding: 10px 20px;
-    border-bottom: 2px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #015c5d;
+  color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-img {
+  height: 40px;
+  width: auto;
+}
+
+.logo-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-link,
+.nav-btn {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: opacity 0.3s;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-link:hover,
+.nav-btn:hover {
+  opacity: 0.8;
+}
+
+.nav-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .nav-links {
+    width: 100%;
+    justify-content: center;
     flex-wrap: wrap;
-    min-height: 60px;
-  }
-  
-  /* Logo section with image + title */
-  .logo-link{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    
-  }
-  
-  .logo-img {
-    height: 40px;
-    width: auto;
-    max-width: 100%;
-    object-fit: contain;
-  }
-  
-  /* Logo text / slogan */
-  .logo-title {
-    font-size: 20px;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  /* Nav links styling */
-  nav a {
-    margin-left: 20px;
-    margin-right: 20px;
-    text-decoration: none;
-    color: #333;
-    font-weight: bold;
-  }
-  
-  nav a:hover {
-    color: #003e3e;
-  }
-  
-
-  /* Responsive behavior */
-  @media (max-width: 600px) {
-    .header {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  
-    nav {
-      margin-top: 10px;
-    }
-  
-    nav a {
-      margin-left: 0;
-      margin-right: 10px;
-    }
-  
-    .logo-img {
-      height: 30px;
-    }
-  
-    .logo-title {
-      font-size: 18px;
-    }
+    gap: 0.5rem;
   }
 
-  .doctorHeader{
-    margin-right: 30px
+  .nav-link,
+  .nav-btn {
+    font-size: 0.9rem;
+    padding: 0.3rem 0.6rem;
   }
-  .doctorHeader:hover{
-    color:#A62B1F;
-  }
+}
 /* Footer Section */
 .footer {
     background-color: #f4f4f4;

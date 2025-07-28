@@ -1,3 +1,37 @@
+export async function getDoctors() {
+    const response = await fetch('/api/doctors');
+    return handleResponse(response);
+}
+
+export async function filterDoctors(name, time, specialty) {
+    const params = new URLSearchParams();
+    if (name) params.append('name', name);
+    if (time) params.append('time', time);
+    if (specialty) params.append('specialty', specialty);
+    
+    const response = await fetch(`/api/doctors/filter?${params.toString()}`);
+    return handleResponse(response);
+}
+
+export async function saveDoctor(doctor, token) {
+    const response = await fetch('/api/doctors', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(doctor)
+    });
+    return handleResponse(response);
+}
+
+function handleResponse(response) {
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+}
+
 /*
   Import the base API URL from the config file
   Define a constant DOCTOR_API to hold the full endpoint for doctor-related actions
